@@ -5,6 +5,7 @@ require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const advertsRouter = require("./routes/adverts");
+const authRouter = require("./routes/auth");
 
 const app = express();
 const formatLogger = app.get("env") === "development" ? "dev" : "short";
@@ -12,6 +13,7 @@ const formatLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatLogger));
 app.use(cors());
 app.use(express.json());
+app.use("/user", authRouter);
 app.use("/adverts", advertsRouter);
 
 app.use("api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -26,22 +28,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-
-// {
-//         "id": 4616,
-//         "year": 2008,
-//         "make": "",
-//         "model": "",
-//         "type": "",
-//         "img": "",
-//         "description": "",
-//         "fuelConsumption": "",
-//         "engineSize": "",
-//         "accessories": [],
-//         "functionalities": [],
-//         "rentalPrice": 250,
-//         "rentalCompany": "",
-//         "address": "",
-//         "rentalConditions": "Minimum age: 30\nValid driver's license\nSecurity deposit and insurance required",
-//         "mileage": 6464
-//     },
