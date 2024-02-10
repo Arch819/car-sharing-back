@@ -1,23 +1,30 @@
 const { Schema, model } = require("mongoose");
-const addressSchema = new Schema({
-  street: {
-    type: String,
-    required: true,
+const { handleMongooseError } = require("../helpers");
+const addressSchema = new Schema(
+  {
+    street: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
   },
-  city: {
-    type: String,
-    required: true,
+  { _id: false }
+);
+const rentalConditionsSchema = new Schema(
+  {
+    MinimumAge: { type: Number, required: true },
+    driverLicense: { type: Boolean, required: true },
+    otherRequirements: String,
   },
-  country: {
-    type: String,
-    required: true,
-  },
-});
-const rentalConditionsSchema = new Schema({
-  MinimumAge: { type: Number, required: true },
-  driverLicense: { type: Boolean, required: true },
-  otherRequirements: String,
-});
+  { _id: false }
+);
 
 const advertSchema = new Schema(
   {
@@ -41,6 +48,7 @@ const advertSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
+advertSchema.post("save", handleMongooseError);
 const Adverts = model("advert", advertSchema);
 
 module.exports = { Adverts };
