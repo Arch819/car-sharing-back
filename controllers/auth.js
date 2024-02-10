@@ -26,6 +26,8 @@ const signUp = async (req, res) => {
       email: newUser.email,
       avatar: newUser.avatar,
       role: newUser.role,
+      createdAdverts: [],
+      favorites: [],
       createdAt: newUser.createdAt,
     },
   });
@@ -53,6 +55,8 @@ const signIn = async (req, res) => {
       email: user.email,
       avatar: user.avatar,
       role: user.role,
+      createdAdverts: user.createdAdverts,
+      favorites: user.favorites,
       createdAt: user.createdAt,
     },
   });
@@ -66,7 +70,16 @@ const logout = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-  const { token, name, email, avatar, role, createdAt } = req.user;
+  const {
+    token,
+    name,
+    email,
+    avatar,
+    role,
+    createdAdverts,
+    favorites,
+    createdAt,
+  } = req.user;
   console.log("refresh");
   res.json({
     token,
@@ -75,6 +88,8 @@ const refresh = async (req, res) => {
       email,
       avatar,
       role,
+      createdAdverts,
+      favorites,
       createdAt,
     },
   });

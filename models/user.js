@@ -11,6 +11,8 @@ const userSchema = new Schema(
     token: String,
     avatar: { type: String, default: "" },
     role: { type: String, enum: rolList, default: "user" },
+    createdAdverts: Array,
+    favorites: Array,
   },
   { versionKey: false, timestamps: true }
 );

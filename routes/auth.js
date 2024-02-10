@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { emptyBody, isValidId, validateBody } = require("../middlewares");
+const { emptyBody, validateBody } = require("../middlewares");
 const {
   signUpSchema,
   signInSchema,
