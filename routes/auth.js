@@ -6,8 +6,16 @@ const {
   signInSchema,
   profileSchema,
 } = require("../schemas/authSchemas");
-const { signUp, signIn, logout, refresh } = require("../controllers/auth");
+const {
+  signUp,
+  signIn,
+  logout,
+  refresh,
+  updateAvatar,
+  updateProfile,
+} = require("../controllers/auth");
 const authenticate = require("../middlewares/authenticate");
+const upload = require("../middlewares/upload");
 
 router.post("/signup", emptyBody(), validateBody(signUpSchema), signUp);
 router.post("/signin", emptyBody(), validateBody(signInSchema), signIn);
@@ -17,9 +25,10 @@ router.patch(
   "/profile",
   authenticate,
   emptyBody(),
-  validateBody(profileSchema)
+  validateBody(profileSchema),
+  updateProfile
 );
-router.patch("/avatar", authenticate, emptyBody());
+router.patch("/avatar", authenticate, upload.single("avatar"), updateAvatar);
 router.delete("/", authenticate);
 
 module.exports = router;

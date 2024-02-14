@@ -1,9 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const fs = require("fs/promises");
 const { User } = require("../models/user");
 const { ctrlWrapper, HttpError } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
+const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.body;
@@ -95,9 +98,44 @@ const refresh = async (req, res) => {
   });
 };
 
+const updateProfile = async (req, res) => {
+  const { _id } = res.user;
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    { ...req.bode },
+    { new: true }
+  );
+  res.json({
+    name: updateUser.name,
+    email: updateUser.email,
+    avatar: updateUser.avatar,
+    role: updateUser.role,
+    createdAdverts: updateUser.createdAdverts,
+    favorites: updateUser.favorites,
+    createdAt: updateUser.createdAt,
+  });
+};
+
+const updateAvatar = async (req, res) => {
+  const { _id } = req.user;
+  const { path: tempUpload, filename } = req.file;
+  const resultUpload = path.join(avatarsDir, filename);
+  await fs.rename(tempUpload, resultUpload);
+  console.log("controller3");
+  const avatar = path.join("avatars", filename);
+  console.log("controller4");
+  const result = await User.findByIdAndUpdate(_id, { avatar }, { new: true });
+  if (!result) {
+    throw HttpError(400, "Bad request");
+  }
+  res.json({ avatar: avatar });
+};
+
 module.exports = {
   signUp: ctrlWrapper(signUp),
   signIn: ctrlWrapper(signIn),
   logout: ctrlWrapper(logout),
   refresh: ctrlWrapper(refresh),
+  updateProfile: ctrlWrapper(updateProfile),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };
