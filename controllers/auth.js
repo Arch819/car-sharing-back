@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs/promises");
 const { User } = require("../models/user");
 const { ctrlWrapper, HttpError } = require("../helpers");
+const { log } = require("console");
 
 const { SECRET_KEY } = process.env;
 const avatarsDir = path.join(__dirname, "../", "public", "avatars");
@@ -68,7 +69,6 @@ const signIn = async (req, res) => {
 const logout = async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { token: "" });
-  console.log("logout");
   res.status(204).send();
 };
 
@@ -119,11 +119,14 @@ const updateProfile = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, filename } = req.file;
+  try {
+    await fs.stat(avatarsDir);
+  } catch (err) {
+    await fs.mkdir(avatarsDir, { recursive: true });
+  }
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
-  console.log("controller3");
   const avatar = path.join("avatars", filename);
-  console.log("controller4");
   const result = await User.findByIdAndUpdate(_id, { avatar }, { new: true });
   if (!result) {
     throw HttpError(400, "Bad request");

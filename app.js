@@ -10,12 +10,13 @@ const authRouter = require("./routes/auth");
 const app = express();
 const formatLogger = app.get("env") === "development" ? "dev" : "short";
 
+app.use(express.static("public"));
 app.use(logger(formatLogger));
 app.use(cors());
 app.use(express.json());
+
 app.use("/user", authRouter);
 app.use("/adverts", advertsRouter);
-
 app.use("api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res) => {
