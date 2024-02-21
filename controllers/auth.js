@@ -118,20 +118,15 @@ const updateProfile = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
-  const { path: tempUpload, filename } = req.file;
-  try {
-    await fs.stat(avatarsDir);
-  } catch (err) {
-    await fs.mkdir(avatarsDir, { recursive: true });
+  if (!req.file) {
+    throw HttpError(400, "File not found");
   }
-  const resultUpload = path.join(avatarsDir, filename);
-  await fs.rename(tempUpload, resultUpload);
-  const avatar = path.join("avatars", filename);
-  const result = await User.findByIdAndUpdate(_id, { avatar }, { new: true });
-  if (!result) {
-    throw HttpError(400, "Bad request");
-  }
-  res.json({ avatar: avatar });
+
+  const avatar = req.file.path;
+
+  await User.findByIdAndUpdate(_id, { avatar });
+
+  res.json({ avatar });
 };
 
 module.exports = {
