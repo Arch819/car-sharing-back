@@ -55,6 +55,21 @@ const createAdvert = async (req, res) => {
   res.status(201).json(newAdvert);
 };
 
+const addImageAdvert = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { idAdvert } = req.params;
+  if (!req.file) {
+    throw HttpError(400, "File not found");
+  }
+  const img = req.file.path;
+  const newAdvert = await Adverts.findByIdAndUpdate(
+    idAdvert,
+    { img },
+    { new: true }
+  );
+  res.json(newAdvert);
+};
+
 const deleteAdvert = async (req, res) => {
   const { idAdvert } = req.params;
   const advert = await Adverts.findById(idAdvert);
@@ -81,4 +96,5 @@ module.exports = {
   createAdvert: ctrlWrapper(createAdvert),
   deleteAdvert: ctrlWrapper(deleteAdvert),
   updateAdvert: ctrlWrapper(updateAdvert),
+  addImageAdvert: ctrlWrapper(addImageAdvert),
 };

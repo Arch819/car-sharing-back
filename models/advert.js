@@ -19,7 +19,7 @@ const addressSchema = new Schema(
 );
 const rentalConditionsSchema = new Schema(
   {
-    MinimumAge: { type: Number, required: true },
+    minimumAge: { type: Number, required: true },
     driverLicense: { type: Boolean, required: true },
     otherRequirements: String,
   },
@@ -33,7 +33,7 @@ const advertSchema = new Schema(
     make: { type: String, required: true },
     model: { type: String, required: true },
     type: { type: String, required: true },
-    img: { type: String, required: true },
+    img: { type: String },
     description: { type: String, required: true },
     fuelConsumption: { type: String, required: true },
     engineSize: { type: String, required: true },

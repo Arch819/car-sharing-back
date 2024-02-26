@@ -13,17 +13,18 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (req, file) => {
+  params: async (req, { fieldname }) => {
     let folder;
     let public;
-    if (file.fieldname === "avatar") {
+    if (fieldname === "avatar") {
       folder = "avatars";
       public = req.user.id;
     }
-    if (file.fieldname === "advert") {
+    if (fieldname === "advert") {
       folder = "adverts";
       public = nanoid();
-    } else {
+    }
+    if (fieldname !== "avatar" && fieldname !== "advert") {
       folder = "misc";
     }
 
