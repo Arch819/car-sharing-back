@@ -56,18 +56,18 @@ const createAdvert = async (req, res) => {
 };
 
 const addImageAdvert = async (req, res) => {
-  const { _id: owner } = req.user;
   const { idAdvert } = req.params;
   if (!req.file) {
     throw HttpError(400, "File not found");
   }
   const img = req.file.path;
-  const newAdvert = await Adverts.findByIdAndUpdate(
+  const updateAdvert = await Adverts.findByIdAndUpdate(
     idAdvert,
     { img },
     { new: true }
   );
-  res.json(newAdvert);
+  console.log(updateAdvert);
+  res.json(updateAdvert);
 };
 
 const deleteAdvert = async (req, res) => {

@@ -22,7 +22,7 @@ router.post(
   validateBody(createAdvertSchema),
   createAdvert
 );
-router.patch("/img/:idAdvert", upload.single("advert"), addImageAdvert);
+router.patch("/:idAdvert", upload.single("advert"), addImageAdvert);
 router.delete("/:idAdvert", isValidId, deleteAdvert);
 router.patch("/:idAdvert", emptyBody(), isValidId, updateAdvert);
 

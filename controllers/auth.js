@@ -83,7 +83,6 @@ const refresh = async (req, res) => {
     favorites,
     createdAt,
   } = req.user;
-  console.log("refresh");
   res.json({
     token,
     profile: {
