@@ -13,7 +13,7 @@ const { createAdvertSchema } = require("../schemas/advertsSchemas");
 const upload = require("../middlewares/upload");
 const authenticate = require("../middlewares/authenticate");
 
-router.get("/", getAdverts);
+router.get("/", authenticate, getAdverts);
 router.get("/:idAdvert", isValidId, getAdvertsById);
 router.post(
   "/",

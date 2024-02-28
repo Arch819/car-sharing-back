@@ -2,6 +2,7 @@ const { ctrlWrapper, HttpError } = require("../helpers");
 const { Adverts } = require("../models/advert");
 
 const getAdverts = async (req, res) => {
+  const { _id } = req.user;
   const {
     limit = 12,
     page = 1,
@@ -9,6 +10,7 @@ const getAdverts = async (req, res) => {
     rentalPrice,
     mileageFrom,
     mileageTo,
+    owner = false,
   } = req.query;
   const skip = (page - 1) * limit;
   const query = {};
@@ -23,6 +25,9 @@ const getAdverts = async (req, res) => {
   }
   if (mileageTo) {
     query.mileage = { ...query.mileage, $lte: mileageTo };
+  }
+  if (owner) {
+    query.owner = { _id };
   }
 
   const total = await Adverts.countDocuments(query);
