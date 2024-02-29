@@ -4,10 +4,8 @@ const path = require("path");
 const fs = require("fs/promises");
 const { User } = require("../models/user");
 const { ctrlWrapper, HttpError } = require("../helpers");
-const { log } = require("console");
 
 const { SECRET_KEY } = process.env;
-const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const signUp = async (req, res) => {
   const { email, password, name } = req.body;

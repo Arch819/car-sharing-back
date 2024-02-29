@@ -57,6 +57,10 @@ const getAdvertsById = async (req, res) => {
 const createAdvert = async (req, res) => {
   const { _id: owner } = req.user;
   const newAdvert = await Adverts.create({ ...req.body, owner });
+
+  req.user.createdAdverts = req.user.createdAdverts || [];
+  req.user.createdAdverts.push(newAdvert._id);
+  await user.save();
   res.status(201).json(newAdvert);
 };
 
