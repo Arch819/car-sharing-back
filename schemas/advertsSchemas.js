@@ -13,7 +13,7 @@ const addressSchema = {
 };
 
 const rentalConditionsSchema = {
-  minimumAge: Joi.number()
+  minimumAge: Joi.string()
     .required()
     .messages({ "any.required": "missing required MinimumAge field" }),
   driverLicense: Joi.boolean()
@@ -49,7 +49,7 @@ const createAdvertSchema = Joi.object({
     .messages({ "any.required": "missing required engineSize field" }),
   accessories: Joi.array(),
   functionalities: Joi.array(),
-  rentalPrice: Joi.number()
+  rentalPrice: Joi.string()
     .required()
     .messages({ "any.required": "missing required rentalPrice field" }),
   rentalCompany: Joi.string()
@@ -57,7 +57,7 @@ const createAdvertSchema = Joi.object({
     .messages({ "any.required": "missing required rentalCompany field" }),
   address: Joi.object(addressSchema).required(),
   rentalConditions: Joi.object(rentalConditionsSchema).required(),
-  mileage: Joi.number()
+  mileage: Joi.string()
     .required()
     .messages({ "any.required": "missing required mileage field" }),
 });

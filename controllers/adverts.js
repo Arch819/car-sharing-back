@@ -1,5 +1,6 @@
 const { ctrlWrapper, HttpError } = require("../helpers");
 const { Adverts } = require("../models/advert");
+const { User } = require("../models/user");
 
 const getAdverts = async (req, res) => {
   const { _id } = req.user;
@@ -60,7 +61,7 @@ const createAdvert = async (req, res) => {
 
   req.user.createdAdverts = req.user.createdAdverts || [];
   req.user.createdAdverts.push(newAdvert._id);
-  await user.save();
+  await User.findByIdAndUpdate(req.user);
   res.status(201).json(newAdvert);
 };
 
@@ -75,17 +76,21 @@ const addImageAdvert = async (req, res) => {
     { img },
     { new: true }
   );
-  console.log(updateAdvert);
   res.json(updateAdvert);
 };
 
 const deleteAdvert = async (req, res) => {
   const { idAdvert } = req.params;
+  console.log(idAdvert);
   const advert = await Adverts.findById(idAdvert);
   if (!advert) {
     throw HttpError(404, "Advert not found");
   }
   await Adverts.findByIdAndDelete(idAdvert);
+  req.user.createdAdverts = req.user.createdAdverts.filter(
+    (id) => id.toString() !== idAdvert.toString()
+  );
+  await User.findByIdAndUpdate(req.user);
   res.status(200).send();
 };
 

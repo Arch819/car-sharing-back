@@ -1,6 +1,5 @@
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const { nanoid } = require("nanoid");
 const cloudinary = require("cloudinary").v2;
 
 const { CLOUDINARY_KEY, CLOUDINARY_NAME, CLOUDINARY_SECRET } = process.env;
@@ -22,7 +21,7 @@ const storage = new CloudinaryStorage({
     }
     if (fieldname === "advert") {
       folder = "adverts";
-      public = nanoid();
+      public = req.params.idAdvert;
     }
     if (fieldname !== "avatar" && fieldname !== "advert") {
       folder = "misc";

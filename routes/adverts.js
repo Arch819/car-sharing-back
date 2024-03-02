@@ -23,7 +23,7 @@ router.post(
   createAdvert
 );
 router.patch("/:idAdvert", upload.single("advert"), addImageAdvert);
-router.delete("/:idAdvert", isValidId, deleteAdvert);
+router.delete("/:idAdvert", authenticate, isValidId, deleteAdvert);
 router.patch("/:idAdvert", emptyBody(), isValidId, updateAdvert);
 
 module.exports = router;
